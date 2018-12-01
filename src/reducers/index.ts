@@ -1,25 +1,57 @@
+import {
+  PING,
+  PONG,
+  FETCH_USER_FULFILLED,
+  FETCH_USER,
+  FETCH_USER_REJECTED,
+  FETCH_USER_CANCELLED
+} from "../actions";
+
 import { combineReducers } from "redux";
-import * as fromTodos from "./todos";
+import { ActionInterface } from "../types";
 
-/*
- * This is the root state of the app
- * It contains every substate of the app
- */
-export interface State {
-  todos: fromTodos.State;
-}
+const pingReducer = (state = { isPinging: false }, action: ActionInterface) => {
+  switch (action.type) {
+    case PING:
+      return { isPinging: true };
 
-/*
- * initialState of the app
- */
-export const initialState: State = {
-  todos: fromTodos.initialState
+    case PONG:
+      return { isPinging: false };
+
+    default:
+      return state;
+  }
 };
 
-/*
- * Root reducer of the app
- * Returned reducer will be of type Reducer<State>
- */
-export const reducer = combineReducers<State>({
-  todos: fromTodos.reducer
+const users = (
+  state = {
+    joy: {
+      avatar_url: ""
+    },
+    error: "",
+    isFetchingUser: false
+  },
+  action: ActionInterface
+) => {
+  switch (action.type) {
+    case FETCH_USER:
+      return { ...state, isFetchingUser: true };
+    case FETCH_USER_FULFILLED:
+      return {
+        ...state,
+        joy: action.payload,
+        isFetchingUser: false
+      };
+    case FETCH_USER_REJECTED:
+      return { ...state, error: action.payload, isFetchingUser: false };
+    case FETCH_USER_CANCELLED:
+      return { ...state, isFetchingUser: false };
+    default:
+      return state;
+  }
+};
+
+export const rootReudcer = combineReducers({
+  ping: pingReducer,
+  user: users
 });
