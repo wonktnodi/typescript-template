@@ -10,12 +10,6 @@ const composeEnhancers = composeWithDevTools({
   // Specify here name, actionsBlacklist, actionsCreators and other options
 });
 
-// console.log("env: ", process.env.NODE_ENV);
-// const composeEnhancers =
-//   /*process.env.NODE_ENV === "development" &&*/
-//   ((window as any) && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
-//   compose;
-
 const epicMiddleware = createEpicMiddleware();
 
 export default function configureStore() {
